@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets/page.dart';
@@ -17,7 +18,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
+  final String img = "assets/ngorder.png";
+  final String img2 = "assets/fragile.png";
   var doc;
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,9 @@ class _MyAppState extends State<MyApp> {
 
   Future<Uint8List> _generatePdf(PdfPageFormat format, String title) async{
     final pdf = pw.Document();
+    final imageProvider =  AssetImage(img);
+    final image = await flutterImageProvider(imageProvider);
+
     pdf.addPage(
         pw.Page(
             pageFormat: format.landscape,
@@ -56,12 +61,12 @@ class _MyAppState extends State<MyApp> {
                 children: [
                   pw.Container(
                       width: 200,
-                        height: 100,
+                        height: 400,
                         decoration: pw.BoxDecoration(border: pw.Border.all(width: 1)),
                       child: pw.Column(
                         crossAxisAlignment: pw.CrossAxisAlignment.center,
                         children: [
-                          pw.SvgImage(svg: "https://cdn.pixabay.com/photo/2016/11/05/20/09/grooming-1801287_960_720.png", width: 50, height: 50),
+                          image == null ? pw.Container(): pw.Image.provider(image, width: 50),
                           pw.Text("KERENID", style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold)),
                           pw.Text("Lenggang Jakarta, Blok D-17, Jl. Medan Merdeka Selatan, Gambir , Jakarta Nomor Telepon +6287881454946",textAlign: pw.TextAlign.center, style: pw.TextStyle(fontSize: 12)),
                         ]
